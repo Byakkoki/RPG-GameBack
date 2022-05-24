@@ -40,7 +40,7 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthenticationGuard)
-  @Get('/:pseudo')
+  @Get('/pseudo/:pseudo')
   getOneUserByPseudo(@Param('pseudo') pseudo: string): Promise<User> {
     return this.userService.getUserByPseudo(pseudo);
   }

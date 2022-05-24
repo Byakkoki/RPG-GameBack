@@ -3,8 +3,8 @@ import * as bcrypt from 'bcrypt';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import {CreateUserDTO} from "../dto/user.dto";
-import {UserTokenPayload} from "../dto/userTokenPayload.dto";
+import { CreateUserDTO } from '../dto/user.dto';
+import { UserTokenPayload } from '../dto/userTokenPayload.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -15,26 +15,31 @@ export class AuthenticationService {
   ) {}
 
   async register(userData: CreateUserDTO) {
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    try {
-      const newUser = await this.userService.createUser({
-        ...userData,
-        password: hashedPassword,
-      });
-      newUser.password = undefined;
-      return newUser;
-    } catch (error) {
-      if (error.sqlState === '23000' || error.code === '23505') {
-        throw new HttpException(
-          'User with that email already exist',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+    const getUserByEmail = await this.userService.getUserByEmail(
+      userData.email,
+    );
+    const getUserByPseudo = await this.userService.getUserByPseudo(
+      userData.pseudo,
+    );
+    if (getUserByEmail) {
       throw new HttpException(
-        'Something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        'User with that email already exist',
+        HttpStatus.BAD_REQUEST,
       );
     }
+    if (getUserByPseudo) {
+      throw new HttpException(
+        'User with that Pseudo already exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const newUser = await this.userService.createUser({
+      ...userData,
+      password: hashedPassword,
+    });
+    newUser.password = undefined;
+    return newUser;
   }
 
   async getAuthenticatedUser(email: string, plainTextPassword: string) {

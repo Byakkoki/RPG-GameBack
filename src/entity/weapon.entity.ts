@@ -1,11 +1,14 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import {Rank} from "../enums/rank.enum";
-import {Rarity} from "../enums/rarity.enum";
+import { Rank } from '../enums/rank.enum';
+import { Rarity } from '../enums/rarity.enum';
 
 @Entity()
 export class Weapon {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column('varchar')
+  image: string;
 
   @Column('varchar')
   name: string;
@@ -21,7 +24,7 @@ export class Weapon {
     enum: Rarity,
     default: [Rarity.COMMUN],
   })
-  rank: Rarity;
+  rarity: Rarity;
 
   @Column('varchar')
   damage: number;
