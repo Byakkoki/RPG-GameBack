@@ -5,6 +5,7 @@ import {User} from "../entity/user.entity";
 import {Confrerie} from "../entity/confrerie.entity";
 import {Weapon} from "../entity/weapon.entity";
 import {Armor} from "../entity/armor.entity";
+import {Item} from "../entity/item.entity";
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import {Armor} from "../entity/armor.entity";
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, Confrerie, Weapon, Armor],
+        entities: [User, Confrerie, Weapon, Armor, Item],
         synchronize: true,
         migrations: ['dist/src/db/migrations.ts'],
         cli: { migrationsDir: 'src/db/migrations' },

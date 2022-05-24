@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Weapon } from '../entity/weapon.entity';
 import { Confrerie } from '../entity/confrerie.entity';
 import { CreateConfrerieDTO } from '../dto/confrerie.dto';
-import {CreateWeaponDTO, WeaponChange, WeaponChangeStats} from '../dto/weapon.dto';
+import {CreateWeaponDTO, WeaponChange, WeaponChangeStats, WeaponPrice} from '../dto/weapon.dto';
 import { RoleEnum } from '../enums/role.enum';
 import { Rank } from '../enums/rank.enum';
 import { Rarity } from '../enums/rarity.enum';
@@ -70,6 +70,15 @@ export class WeaponService {
     weapon.crit_damage = stats.crit_damage;
     weapon.crit_chance = stats.crit_chance;
     weapon.durability = stats.durability;
+
+    await this.weaponRepositoty.save(weapon);
+    return weapon;
+  }
+
+  async changePrice(id: string, stats: WeaponPrice) {
+    const weapon = await this.find(id);
+    weapon.buy = stats.buy;
+    weapon.sell = stats.sell;
 
     await this.weaponRepositoty.save(weapon);
     return weapon;

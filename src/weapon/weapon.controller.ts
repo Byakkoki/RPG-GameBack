@@ -1,7 +1,9 @@
 import {
   Body,
-  Controller, Delete,
-  Get, HttpCode,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -11,12 +13,14 @@ import JwtAuthenticationGuard from '../authentication/guard/jwtAuthentication.gu
 import { Weapon } from '../entity/weapon.entity';
 import { WeaponService } from './weapon.service';
 import {
-  CreateWeaponDTO, WeaponChange,
+  CreateWeaponDTO,
+  WeaponChange,
   WeaponChangeLevel,
   WeaponChangeStats,
+  WeaponPrice,
 } from '../dto/weapon.dto';
-import { UserChangeLevel } from '../dto/user.dto';
-import { User } from '../entity/user.entity';
+import { RolesGuard } from '../authentication/guard/role.guard';
+import { RoleEnum } from '../enums/role.enum';
 
 @Controller('weapon')
 export class WeaponController {
@@ -28,7 +32,7 @@ export class WeaponController {
     return this.weaponService.findAll();
   }
 
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, new RolesGuard([RoleEnum.ADMIN]))
   @Get('/:id')
   getOneUserByEmail(@Param('id') id: string): Promise<Weapon> {
     return this.weaponService.find(id);
@@ -43,8 +47,8 @@ export class WeaponController {
   @UseGuards(JwtAuthenticationGuard)
   @Put('/change/:id')
   changeAll(
-      @Param('id') id: string,
-      @Body() body: WeaponChange,
+    @Param('id') id: string,
+    @Body() body: WeaponChange,
   ): Promise<Weapon> {
     return this.weaponService.changeAll(id, body);
   }
@@ -74,6 +78,15 @@ export class WeaponController {
     @Body() body: WeaponChangeStats,
   ): Promise<Weapon> {
     return this.weaponService.changeStats(id, body);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Put('/change_price/:id')
+  changePrice(
+    @Param('id') id: string,
+    @Body() body: WeaponPrice,
+  ): Promise<Weapon> {
+    return this.weaponService.changePrice(id, body);
   }
 
   @UseGuards(JwtAuthenticationGuard)

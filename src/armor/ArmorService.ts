@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Rarity } from '../enums/rarity.enum';
 import { Armor } from '../entity/armor.entity';
-import {ArmorChange, ArmorChangeStats, CreateArmorDTO} from "../dto/armor.dto";
+import {ArmorChange, ArmorChangeStats, ArmorPrice, CreateArmorDTO} from "../dto/armor.dto";
+import {WeaponPrice} from "../dto/weapon.dto";
 
 @Injectable()
 export class ArmorService {
@@ -65,6 +66,15 @@ export class ArmorService {
     armor.health = stats.health;
     armor.defense = stats.defense;
     armor.durability = stats.durability;
+
+    await this.armorRepository.save(armor);
+    return armor;
+  }
+
+  async changePrice(id: string, stats: ArmorPrice) {
+    const armor = await this.find(id);
+    armor.buy = stats.buy;
+    armor.sell = stats.sell;
 
     await this.armorRepository.save(armor);
     return armor;

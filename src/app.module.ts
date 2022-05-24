@@ -5,6 +5,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { ConfrerieModule } from './confrerie/confrerie.module';
 import { WeaponModule } from './weapon/weapon.module';
 import {ArmorModule} from "./armor/armor.module";
+import {ItemModule} from "./item/item.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import {ArmorModule} from "./armor/armor.module";
     ConfrerieModule,
     WeaponModule,
     ArmorModule,
+    ItemModule,
   ],
   controllers: [],
   providers: [],

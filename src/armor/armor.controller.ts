@@ -15,9 +15,14 @@ import {
   ArmorChange,
   ArmorChangeLevel,
   ArmorChangeStats,
+  ArmorPrice,
   CreateArmorDTO,
 } from '../dto/armor.dto';
-import {ArmorService} from "./ArmorService";
+import { ArmorService } from './ArmorService';
+import { RolesGuard } from '../authentication/guard/role.guard';
+import { RoleEnum } from '../enums/role.enum';
+import { WeaponPrice } from '../dto/weapon.dto';
+import { Weapon } from '../entity/weapon.entity';
 
 @Controller('armor')
 export class ArmorController {
@@ -75,6 +80,15 @@ export class ArmorController {
     @Body() body: ArmorChangeStats,
   ): Promise<Armor> {
     return this.armorService.changeStats(id, body);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Put('/change_price/:id')
+  changePrice(
+    @Param('id') id: string,
+    @Body() body: ArmorPrice,
+  ): Promise<Armor> {
+    return this.armorService.changePrice(id, body);
   }
 
   @UseGuards(JwtAuthenticationGuard)

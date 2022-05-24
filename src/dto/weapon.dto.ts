@@ -7,6 +7,8 @@ export class CreateWeaponDTO {
   crit_damage: number;
   crit_chance: number;
   durability: number;
+  buy: number;
+  sell: number;
 }
 export class WeaponChangeLevel {
   level: number
@@ -21,4 +23,8 @@ export class WeaponChange {
   image: string;
   name: string;
   description: string;
+}
+export class WeaponPrice {
+  buy: number;
+  sell: number;
 }

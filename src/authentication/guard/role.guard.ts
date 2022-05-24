@@ -12,7 +12,7 @@ import { User } from '../../entity/user.entity';
 export class RolesGuard implements CanActivate {
   private logger: Logger = new Logger('RolesGuard');
 
-  constructor(private roles: RoleEnum) {}
+  constructor(private roles: RoleEnum[]) {}
 
   canActivate(
     context: ExecutionContext,
@@ -31,11 +31,15 @@ export class RolesGuard implements CanActivate {
     return this.matchRoles(user, this.roles);
   }
 
-  matchRoles(user: User, roles: RoleEnum) {
+  matchRoles(user: User, roles: RoleEnum[]) {
     let hasRole = true;
-    if (user.role.includes(roles) == false) {
-      hasRole = false;
-    }
+    console.log(user)
+    console.log(roles)
+    roles.forEach((role) => {
+      if(user.role.includes(role) == false){
+        hasRole = false
+      }
+    })
     return hasRole;
   }
 }

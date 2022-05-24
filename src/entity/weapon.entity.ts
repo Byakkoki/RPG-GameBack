@@ -37,4 +37,10 @@ export class Weapon {
 
   @Column('varchar')
   durability: number;
+
+  @Column('varchar')
+  buy: number;
+
+  @Column('varchar')
+  sell: number;
 }

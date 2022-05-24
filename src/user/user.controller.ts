@@ -13,6 +13,8 @@ import { UserService } from './user.service';
 import { UserChangeLevel, UserChangeMoney } from '../dto/user.dto';
 import RequestWithUser from '../authentication/request/requestWithUser.interface';
 import JwtAuthenticationGuard from "../authentication/guard/jwtAuthentication.guard";
+import {RolesGuard} from "../authentication/guard/role.guard";
+import {RoleEnum} from "../enums/role.enum";
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -45,7 +47,7 @@ export class UserController {
     return this.userService.getUserByPseudo(pseudo);
   }
 
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, new RolesGuard([RoleEnum.ADMIN]))
   @Put('/change_role/:id')
   changeRole(
     @Param('id') idUser: string,

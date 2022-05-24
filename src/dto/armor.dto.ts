@@ -6,6 +6,8 @@ export class CreateArmorDTO {
   health: number;
   defense: number;
   durability: number;
+  buy: number;
+  sell: number;
 }
 export class ArmorChangeLevel {
   level: number;
@@ -19,4 +21,8 @@ export class ArmorChange {
   image: string;
   name: string;
   description: string;
+}
+export class ArmorPrice {
+  buy: number;
+  sell: number;
 }

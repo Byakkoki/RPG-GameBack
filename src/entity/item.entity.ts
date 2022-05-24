@@ -1,8 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Rarity } from '../enums/rarity.enum';
+import { Type } from '../enums/type.enum';
 
 @Entity()
-export class Armor {
+export class Item {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -15,8 +16,12 @@ export class Armor {
   @Column('varchar')
   description: string;
 
-  @Column('varchar')
-  level: number;
+  @Column({
+    type: 'enum',
+    enum: Type,
+    default: [Type.NULL],
+  })
+  type: Type;
 
   @Column({
     type: 'enum',
@@ -24,15 +29,6 @@ export class Armor {
     default: [Rarity.COMMUN],
   })
   rarity: Rarity;
-
-  @Column('varchar')
-  health: number;
-
-  @Column('varchar')
-  defense: number;
-
-  @Column('varchar')
-  durability: number;
 
   @Column('varchar')
   buy: number;
